@@ -4,18 +4,17 @@ import java.net.URI;
 import java.util.List;
 
 import br.edu.fema.Forum.Repository.CursoRepository;
+import br.edu.fema.Forum.controller.dto.DetalhesDoTopicoDto;
 import br.edu.fema.Forum.controller.form.TopicosForm;
+import br.edu.fema.Forum.controller.dto.TopicoDto;
+import br.edu.fema.Forum.model.Topico;
+import br.edu.fema.Forum.Repository.TopicosRepository;
+import br.edu.fema.Forum.model.StatusTopico;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
-import br.edu.fema.Forum.controller.dto.TopicoDto;
-import br.edu.fema.Forum.model.Topico;
-import br.edu.fema.Forum.Repository.TopicosRepository;
-import br.edu.fema.Forum.model.StatusTopico;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
@@ -51,5 +50,12 @@ public class TopicosController {
 
         URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicoDto(topico));
+    }
+
+    @GetMapping("/{id}")
+    public DetalhesDoTopicoDto detalhar(@PathVariable Long id) {
+
+        Topico topico = topicosRepository.getReferenceById(id);
+        return new DetalhesDoTopicoDto(topico);
     }
 }
