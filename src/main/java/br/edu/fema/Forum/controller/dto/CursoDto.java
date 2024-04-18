@@ -31,18 +31,6 @@ public class CursoDto {
         return categoria;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
     public static List<CursoDto> converter(List<Curso> cursos) {
         return cursos.stream().map(CursoDto::new).collect(Collectors.toList());
     }
