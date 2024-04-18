@@ -2,6 +2,7 @@ package br.edu.fema.Forum.controller;
 
 import br.edu.fema.Forum.Repository.CursoRepository;
 import br.edu.fema.Forum.controller.dto.CursoDto;
+import br.edu.fema.Forum.controller.form.AtualizacaoCursosForm;
 import br.edu.fema.Forum.controller.form.CursosForm;
 import br.edu.fema.Forum.model.Curso;
 import jakarta.transaction.Transactional;
@@ -38,4 +39,12 @@ public class CursosController {
         URI uri = uriBuilder.path("/cursos/{id}").buildAndExpand(curso.getId()).toUri();
         return ResponseEntity.created(uri).body(new CursoDto(curso));
     }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<CursoDto> atualizar (@PathVariable Long id, @RequestBody @Valid AtualizacaoCursosForm form) {
+        Curso curso = form.atualizar(id, cursoRepository);
+        return ResponseEntity.ok(new CursoDto(curso));
+    }
 }
+

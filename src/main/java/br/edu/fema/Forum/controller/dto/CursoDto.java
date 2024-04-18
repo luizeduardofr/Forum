@@ -16,7 +16,7 @@ public class CursoDto {
         super();
         this.id = curso.getId();
         this.nome = curso.getNome();
-        this.categoria = getCategoria();
+        this.categoria = curso.getCategoria();
     }
 
     public Long getId() {
@@ -31,7 +31,19 @@ public class CursoDto {
         return categoria;
     }
 
-    public static List<CursoDto> converter(List<Curso> curso) {
-        return curso.stream().map(CursoDto::new).collect(Collectors.toList());
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public static List<CursoDto> converter(List<Curso> cursos) {
+        return cursos.stream().map(CursoDto::new).collect(Collectors.toList());
     }
 }

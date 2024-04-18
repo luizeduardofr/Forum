@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.edu.fema.Forum.Repository.CursoRepository;
 import br.edu.fema.Forum.controller.dto.DetalhesDoTopicoDto;
+import br.edu.fema.Forum.controller.form.AtualizacaoTopicosForm;
 import br.edu.fema.Forum.controller.form.TopicosForm;
 import br.edu.fema.Forum.controller.dto.TopicoDto;
 import br.edu.fema.Forum.model.Topico;
@@ -57,5 +58,12 @@ public class TopicosController {
 
         Topico topico = topicosRepository.getReferenceById(id);
         return new DetalhesDoTopicoDto(topico);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicosForm form) {
+        Topico topico = form.atualizar(id, topicosRepository);
+        return ResponseEntity.ok(new TopicoDto(topico));
     }
 }
