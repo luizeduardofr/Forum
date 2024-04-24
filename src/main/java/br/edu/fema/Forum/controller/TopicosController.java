@@ -66,4 +66,11 @@ public class TopicosController {
         Topico topico = form.atualizar(id, topicosRepository);
         return ResponseEntity.ok(new TopicoDto(topico));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TopicoDto> remover(@PathVariable Long id) {
+
+        topicosRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }

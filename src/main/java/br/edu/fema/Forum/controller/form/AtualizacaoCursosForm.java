@@ -1,10 +1,8 @@
 package br.edu.fema.Forum.controller.form;
 
 import br.edu.fema.Forum.Repository.CursoRepository;
-import br.edu.fema.Forum.Repository.TopicosRepository;
 import br.edu.fema.Forum.model.Curso;
 
-import br.edu.fema.Forum.model.Topico;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;

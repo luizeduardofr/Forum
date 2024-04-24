@@ -46,5 +46,11 @@ public class CursosController {
         Curso curso = form.atualizar(id, cursoRepository);
         return ResponseEntity.ok(new CursoDto(curso));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CursoDto> remover(@PathVariable Long id) {
+        cursoRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }
 
