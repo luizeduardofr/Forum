@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cursos")
@@ -43,14 +44,24 @@ public class CursosController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<CursoDto> atualizar (@PathVariable Long id, @RequestBody @Valid AtualizacaoCursosForm form) {
-        Curso curso = form.atualizar(id, cursoRepository);
-        return ResponseEntity.ok(new CursoDto(curso));
+
+        Optional<Curso> optional = cursoRepository.findById(id);
+        if (optional.isPresent()) {
+            Curso curso = form.atualizar(id, cursoRepository);
+            return ResponseEntity.ok(new CursoDto(curso));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CursoDto> remover(@PathVariable Long id) {
-        cursoRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> remover(@PathVariable Long id) {
+
+        Optional<Curso> optional = cursoRepository.findById(id);
+        if(optional.isPresent()) {
+            cursoRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
 
