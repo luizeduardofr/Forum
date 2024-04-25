@@ -1,10 +1,9 @@
 package br.edu.fema.Forum.controller.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import br.edu.fema.Forum.model.Topico;
+import org.springframework.data.domain.Page;
 
 public class TopicoDto {
 
@@ -37,8 +36,8 @@ public class TopicoDto {
         return dataCriacao;
     }
 
-    public static List<TopicoDto> converter(List<Topico> topicos) {
+    public static Page<TopicoDto> converter(Page<Topico> topicos) {
         // TODO Auto-generated method stub
-        return topicos.stream().map(TopicoDto::new).collect(Collectors.toList());
+        return topicos.map(TopicoDto::new);
     }
 }

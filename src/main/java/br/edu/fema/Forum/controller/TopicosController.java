@@ -1,7 +1,6 @@
 package br.edu.fema.Forum.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import br.edu.fema.Forum.Repository.CursoRepository;
@@ -11,14 +10,15 @@ import br.edu.fema.Forum.controller.form.TopicosForm;
 import br.edu.fema.Forum.controller.dto.TopicoDto;
 import br.edu.fema.Forum.model.Topico;
 import br.edu.fema.Forum.Repository.TopicosRepository;
-import br.edu.fema.Forum.model.StatusTopico;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 
 @RestController
 @RequestMapping("/topicos")
@@ -31,17 +31,18 @@ public class TopicosController {
     private CursoRepository cursoRepository;
 
     @GetMapping
-    public List<TopicoDto> lista(String nomeCurso, StatusTopico status) {
+    public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso, @RequestParam int pagina, @RequestParam int qtd) {
 
-        List<Topico> topicos;
-        if(nomeCurso != null) {
-            topicos = this.topicosRepository.findByCursoNome(nomeCurso);
-        } else if (status != null) {
-            topicos = this.topicosRepository.findByStatus(status);
-        } else {
-            topicos = this.topicosRepository.findAll();
+        Pageable paginacao = PageRequest.of(pagina, qtd);
+
+        if(nomeCurso == null) {
+            Page<Topico> topicos = topicosRepository.findAll(paginacao);
+            return TopicoDto.converter(topicos);
         }
-        return TopicoDto.converter(topicos);
+        else {
+            Page<Topico> topicos = topicosRepository.findByCursoNome(nomeCurso, paginacao);
+            return TopicoDto.converter(topicos);
+        }
     }
 
     @PostMapping
