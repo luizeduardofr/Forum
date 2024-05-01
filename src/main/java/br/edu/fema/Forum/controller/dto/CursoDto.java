@@ -1,10 +1,8 @@
 package br.edu.fema.Forum.controller.dto;
 
 import br.edu.fema.Forum.model.Curso;
-import br.edu.fema.Forum.model.Topico;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CursoDto {
 
@@ -31,7 +29,7 @@ public class CursoDto {
         return categoria;
     }
 
-    public static List<CursoDto> converter(List<Curso> cursos) {
-        return cursos.stream().map(CursoDto::new).collect(Collectors.toList());
+    public static Page<CursoDto> converter(Page<Curso> cursos) {
+        return cursos.map(CursoDto::new);
     }
 }

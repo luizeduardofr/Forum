@@ -8,12 +8,15 @@ import br.edu.fema.Forum.model.Curso;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,9 +28,13 @@ public class CursosController {
 
     @GetMapping
     @ResponseBody
-    public List<CursoDto> lista() {
+    public Page<CursoDto> lista(@RequestParam(required = false)
+                                @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10)
+                                Pageable paginacao) {
 
-        List<Curso> cursos = this.cursoRepository.findAll();
+        Page<Curso> cursos;
+
+        cursos = this.cursoRepository.findAll(paginacao);
         return CursoDto.converter(cursos);
     }
 
@@ -39,6 +46,16 @@ public class CursosController {
 
         URI uri = uriBuilder.path("/cursos/{id}").buildAndExpand(curso.getId()).toUri();
         return ResponseEntity.created(uri).body(new CursoDto(curso));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> detalhar(@PathVariable Long id) {
+
+        Optional<Curso> curso = cursoRepository.findById(id);
+        if(curso.isPresent()) {
+            return ResponseEntity.ok(new CursoDto(curso.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")

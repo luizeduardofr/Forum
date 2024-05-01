@@ -14,8 +14,9 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,15 +32,14 @@ public class TopicosController {
     private CursoRepository cursoRepository;
 
     @GetMapping
-    public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso, @RequestParam int pagina, @RequestParam int qtd) {
-
-        Pageable paginacao = PageRequest.of(pagina, qtd);
+    public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
+                                 @PageableDefault(sort= "id", direction = Sort.Direction.DESC, page = 0, size = 10)
+                                 Pageable paginacao) {
 
         if(nomeCurso == null) {
             Page<Topico> topicos = topicosRepository.findAll(paginacao);
             return TopicoDto.converter(topicos);
-        }
-        else {
+        } else {
             Page<Topico> topicos = topicosRepository.findByCursoNome(nomeCurso, paginacao);
             return TopicoDto.converter(topicos);
         }
