@@ -28,8 +28,7 @@ public class CursosController {
 
     @GetMapping
     @ResponseBody
-    public Page<CursoDto> lista(@RequestParam(required = false)
-                                @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10)
+    public Page<CursoDto> lista(@PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10)
                                 Pageable paginacao) {
 
         Page<Curso> cursos;
