@@ -8,6 +8,8 @@ import br.edu.fema.Forum.model.Curso;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +30,7 @@ public class CursosController {
 
     @GetMapping
     @ResponseBody
+    @Cacheable(value = "ListaDeCursos")
     public Page<CursoDto> lista(@PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10)
                                 Pageable paginacao) {
 
@@ -39,6 +42,7 @@ public class CursosController {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = "ListaDeCursos", allEntries = true)
     public ResponseEntity<CursoDto> cadastrar(@RequestBody @Valid CursosForm form, UriComponentsBuilder uriBuilder) {
         Curso curso = form.converter(form);
         cursoRepository.save(curso);
@@ -59,6 +63,7 @@ public class CursosController {
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "ListaDeCursos", allEntries = true)
     public ResponseEntity<CursoDto> atualizar (@PathVariable Long id, @RequestBody @Valid AtualizacaoCursosForm form) {
 
         Optional<Curso> optional = cursoRepository.findById(id);
@@ -70,6 +75,8 @@ public class CursosController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
+    @CacheEvict(value = "ListaDeCursos", allEntries = true)
     public ResponseEntity<?> remover(@PathVariable Long id) {
 
         Optional<Curso> optional = cursoRepository.findById(id);
