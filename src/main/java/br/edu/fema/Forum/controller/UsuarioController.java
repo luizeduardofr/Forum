@@ -4,12 +4,13 @@ import br.edu.fema.Forum.Repository.UsuarioRepository;
 import br.edu.fema.Forum.controller.dto.UsuarioDto;
 import br.edu.fema.Forum.controller.form.UsuarioForm;
 import br.edu.fema.Forum.model.Usuario;
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.List;
 

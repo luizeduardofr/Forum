@@ -3,9 +3,11 @@ package br.edu.fema.Forum.controller.form;
 import br.edu.fema.Forum.Repository.CursoRepository;
 import br.edu.fema.Forum.model.Curso;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class AtualizacaoCursosForm {
 

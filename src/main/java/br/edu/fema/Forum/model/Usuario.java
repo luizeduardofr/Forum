@@ -1,7 +1,11 @@
 package br.edu.fema.Forum.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Objects;
-import jakarta.persistence.*;
+
 
 @Entity
 public class Usuario {

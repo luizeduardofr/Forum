@@ -1,12 +1,14 @@
 package br.edu.fema.Forum.model;
 
 import br.edu.fema.Forum.controller.dto.CursoDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.*;
 
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Objects;
-import java.util.stream.Collectors;
+
 
 @Entity
 public class Curso {
