@@ -13,5 +13,4 @@ public class ForumFema20241Application {
     public static void main(String[] args) {
         SpringApplication.run(ForumFema20241Application.class, args);
     }
-
 }

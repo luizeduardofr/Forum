@@ -2,10 +2,19 @@ package br.edu.fema.Forum.controller.form;
 
 import br.edu.fema.Forum.model.Usuario;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class UsuarioForm {
 
+    @NotNull
+    @NotEmpty
     private String nome;
+    @NotNull
+    @NotEmpty
     private String email;
+    @NotNull
+    @NotEmpty
     private String senha;
 
     public String getNome() {
