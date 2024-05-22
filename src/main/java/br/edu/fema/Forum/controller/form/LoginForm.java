@@ -1,5 +1,7 @@
 package br.edu.fema.Forum.controller.form;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -26,5 +28,10 @@ public class LoginForm {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public UsernamePasswordAuthenticationToken converter() {
+
+        return new UsernamePasswordAuthenticationToken(email,senha);
     }
 }
