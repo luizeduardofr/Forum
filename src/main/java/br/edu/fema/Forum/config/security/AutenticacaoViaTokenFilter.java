@@ -1,7 +1,11 @@
 package br.edu.fema.Forum.config.security;
 
+import br.edu.fema.Forum.Repository.UsuarioRepository;
 import br.edu.fema.Forum.config.service.AutenticacaoService;
 import br.edu.fema.Forum.config.service.TokenService;
+import br.edu.fema.Forum.model.Usuario;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -12,21 +16,32 @@ import java.io.IOException;
 public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
     private TokenService tokenService;
+    private UsuarioRepository usuarioRepository;
 
-    public AutenticacaoViaTokenFilter(TokenService tokenService) {
-
+    public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String token = recuperarToken(request);
-        //System.out.println(token);
+        //System.out.println("Token recuperado ==> " + token);
         boolean valido = tokenService.isTokenValido(token);
-        System.out.println(valido);
-
+        //System.out.println("Token válido? ==> " + valido);
+        if (valido) {
+            autenticarCliente(token);
+        }
         filterChain.doFilter(request, response);
+    }
+
+    private void autenticarCliente (String token) {
+
+        Long idUsuario = tokenService.getIdUsuario(token);
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private String recuperarToken(HttpServletRequest request) {
